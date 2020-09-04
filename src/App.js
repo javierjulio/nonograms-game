@@ -52,26 +52,32 @@ function App() {
     })
   }
 
+  let lastCell;
+
   const mouseMoveHandler = (event) => {
     console.log('mousemove', event.button)
 
     let cell = event.target.closest('.nonogram-cell')
-    if (cell) {
-      if (event.button === LEFT_MOUSE_CLICK) {
-        if (clearSelection) {
-          cell.classList.remove('crossed', 'filled')
-        } else if (!cell.classList.contains('crossed') && !cell.classList.contains('filled')) {
-          // cell.classList.remove('crossed')
-          cell.classList.add('filled')
-        }
-      }
-      else if (event.button === RIGHT_MOUSE_CLICK) {
-        if (!cell.classList.contains('crossed') && !cell.classList.contains('filled')) {
-          // cell.classList.remove('filled')
-          cell.classList.add('crossed')
-        }
+
+    if (!cell || lastCell === cell)
+      return;
+
+    if (event.button === LEFT_MOUSE_CLICK) {
+      if (clearSelection) {
+        cell.classList.remove('crossed', 'filled')
+      } else if (!cell.classList.contains('crossed') && !cell.classList.contains('filled')) {
+        // cell.classList.remove('crossed')
+        cell.classList.add('filled')
       }
     }
+    else if (event.button === RIGHT_MOUSE_CLICK) {
+      if (!cell.classList.contains('crossed') && !cell.classList.contains('filled')) {
+        // cell.classList.remove('filled')
+        cell.classList.add('crossed')
+      }
+    }
+
+    lastCell = cell
   }
 
   const contextMenuHandler = (event) => {
