@@ -4,18 +4,19 @@ import './App.css';
 import getColumnHints from './utils/puzzle/getColumnHints';
 import getRowHints from './utils/puzzle/getRowHints';
 
+function toKey(...values) {
+  return values.map(v => v.toString()).join('_')
+}
+
 function HintNumber(props) {
   return <div className="hint-num">{props.value}</div>
 }
 
 function HintGroup(props) {
-  return (
-    <div className="hint-cell">
-      {props.hints.map((hint, index) => {
-        return <HintNumber value={hint} key={`${hint}-${index}`} />
-      })}
-    </div>
-  )
+  const numbers = props.hints.map((hint, index) =>
+    <HintNumber value={hint} key={toKey(hint, index)} />
+  );
+  return <div className="hint-cell">{numbers}</div>
 }
 
 function App() {
@@ -30,25 +31,16 @@ function App() {
   const columnHints = getColumnHints(data)
 
   function renderHints(hints) {
-    // return hints.map((group, index) => {
-    //   return (
-    //     <div className="hint-cell" key={index}>
-    //       {group.map((hint, index) => {
-    //         return <div className="hint-num" key={`${hint}-${index}`}>{hint}</div>
-    //       })}
-    //     </div>
-    //   )
-    // })
-    return hints.map((group, index) => {
-      return <HintGroup hints={group} key={index} />
-    })
+    return hints.map((group, index) =>
+      <HintGroup hints={group} key={toKey(group, index)} />
+    )
   }
 
   function renderPuzzle(data) {
     return data.map((row, rowIndex) => {
-      return row.map((_, colIndex) => {
-        return <div className="nonogram-cell" key={`puzzle-${rowIndex}-${colIndex}`}></div>
-      })
+      return row.map((_, colIndex) =>
+        <div className="nonogram-cell" key={toKey(rowIndex, colIndex)}></div>
+      )
     })
   }
 
