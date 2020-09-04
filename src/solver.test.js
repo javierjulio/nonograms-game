@@ -1,67 +1,6 @@
 import solvable from './solver';
 import seedrandom from 'seedrandom';
 
-let draw = (rowHints, columnHints, rows) => {
-  let result = '';
-  let maxLength = a => a.map(x => x.length).reduce((max, i) => i > max ? i : max, 0);
-
-  let joinedRowHints = rowHints.map(x => x.join(' '));
-  let maxRowHintLength = maxLength(joinedRowHints);
-
-  let colHints = columnHints.map(x => x.join(' '));
-  let maxColHintLength = maxLength(colHints);
-  colHints = colHints.map(x => x.padStart(maxColHintLength).split(''));
-
-  for (let i = 0; i < maxColHintLength; i++) {
-    let n = colHints.map(x => x.shift()).join('');
-    result += ''.padStart(maxRowHintLength);
-    result += ' ' + n;
-    result += '\n';
-  }
-  // result += '\n';
-
-  rows.forEach((content, i) => {
-    let art = content.map(x => {
-      if (x === -1) {
-        return 'x';
-      }
-      return ['░', '█'][x]
-    }).join('');
-    result += `${joinedRowHints[i].padStart(maxRowHintLength)} ${art}`;
-    result += '\n';
-  });
-
-  return result;//.replace(/\n +\n/g, '\n\n');
-};
-
-test('ascii draw', () => {
-  const data = [
-    [ 1, 1, 1, 0, 0 ],
-    [ 1, 1, 1, 1, 1 ],
-    [ 1, 1, 1, 0, 0 ],
-    [ 1, 0, 1, 1, 0 ],
-    [ 1, 0, 1, 0, 0 ]
-  ]
-  const rowHints = [ [3], [5], [3], [1, 2], [1, 1] ]
-  const columnHints = [ [5], [3], [5], [1, 1], [1] ]
-  // console.log(draw(rowHints, columnHints, data))
-
-  const output = [
-    "       1 ",
-    "         ",
-    "    53511",
-    // "",
-    "  3 ███░░",
-    "  5 █████",
-    "  3 ███░░",
-    "1 2 █░██░",
-    "1 1 █░█░░",
-    ""
-  ].join('\n')
-
-  expect(draw(rowHints, columnHints, data)).toBe(output)
-})
-
 test('solvable 5x5 with one hint dimension', () => {
   const rowHints = [[3], [3], [4], [3], [1]]
   const columnHints = [[2], [2], [4], [3], [3]]
@@ -148,6 +87,7 @@ function generateRandomPuzzle(rng, rows, cols, values = 1, density = null) {
 
 import getColumnHints from './utils/puzzle/getColumnHints';
 import getRowHints from './utils/puzzle/getRowHints';
+import draw from './utils/puzzle/asciiDraw';
 
 // test('seed random', () => {
 //   const expectedBoard = [
