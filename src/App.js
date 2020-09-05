@@ -189,9 +189,6 @@ function App() {
           {renderPuzzle(data)}
         </div>
       </div>
-      <a className="App-link" href="https://reactjs.org">
-        Learn React
-      </a>
     </div>
   );
 }
