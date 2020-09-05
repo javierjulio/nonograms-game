@@ -7,3 +7,9 @@ test('renders column hint value of 5', () => {
   const linkElement = getByText("5");
   expect(linkElement).toBeInTheDocument();
 });
+
+test('title on first cell', () => {
+  const { getByTitle } = render(<App />);
+  const firstCell = getByTitle('row 1, column 1')
+  expect(firstCell).toBeInTheDocument();
+});

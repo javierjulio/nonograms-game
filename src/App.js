@@ -39,7 +39,7 @@ function App() {
   function renderPuzzle(data) {
     return data.map((row, rowIndex) => {
       return row.map((_, colIndex) =>
-        <div className="nonogram-cell" key={toKey(rowIndex, colIndex)}></div>
+        <div className="nonogram-cell" title={`row ${rowIndex+1}, column ${colIndex+1}`} key={toKey(rowIndex, colIndex)}></div>
       )
     })
   }
