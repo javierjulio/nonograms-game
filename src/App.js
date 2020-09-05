@@ -166,6 +166,12 @@ function App() {
     }
   }
 
+  const pointerLeaveHandler = (event) => {
+    console.log('pointerLeave');
+    document.removeEventListener('pointermove', pointerMoveHandler)
+    document.removeEventListener('pointerup', pointerUpHandler)
+  }
+
   return (
     <div className="disable-text-selection">
       <div className="full-grid">
@@ -175,7 +181,11 @@ function App() {
         <div className="row-hints">
           <HintGroups data={rowHints} />
         </div>
-        <div className="nonogram-grid" onTouchEnd={disableTouchAction} onPointerDown={pointerDownHandler} onContextMenu={contextMenuHandler}>
+        <div className="nonogram-grid"
+          onPointerDown={pointerDownHandler}
+          onPointerLeave={pointerLeaveHandler}
+          onTouchEnd={disableTouchAction}
+          onContextMenu={contextMenuHandler}>
           {renderPuzzle(data)}
         </div>
       </div>
