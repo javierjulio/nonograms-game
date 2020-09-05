@@ -24,6 +24,13 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 }
 
+.disable-text-selection {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .full-grid {
   display: grid;
   grid-template-areas: ".         column-hints"
@@ -32,6 +39,7 @@ body {
   /* grid-template-rows: repeat(2, minmax(40px, auto)); */
   grid-template-rows: auto 1fr;
   grid-gap: 4px;
+  touch-action: none; /* Using none here will disable all browser-defined actions started over that element. */
 }
 .full-grid > :nth-child(1) {
   grid-area: column-hints;
@@ -92,10 +100,6 @@ body {
   grid-template-rows: repeat(5, 1fr);
   height: 250px;
   width: 250px;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
 }
 .nonogram-grid:active,
 .nonogram-cell:active {
