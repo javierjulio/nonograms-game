@@ -158,9 +158,6 @@ function App() {
       if (value.classList.contains('filled')) {
         answer[rowIndex][colIndex] = 1
       }
-      else if (value.classList.contains('crossed')) {
-        answer[rowIndex][colIndex] = 0
-      }
     })
 
     if (JSON.stringify(data) === JSON.stringify(answer)) {
