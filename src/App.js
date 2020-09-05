@@ -19,6 +19,12 @@ function HintGroup(props) {
   return <div className="hint-cell">{numbers}</div>
 }
 
+function HintGroups(props) {
+  return props.data.map((group, index) =>
+    <HintGroup hints={group} key={toKey(group, index)} />
+  )
+}
+
 function App() {
   const data = [
     [ 1, 1, 1, 1, 0 ],
@@ -29,12 +35,6 @@ function App() {
   ]
   const rowHints = getRowHints(data)
   const columnHints = getColumnHints(data)
-
-  function renderHints(hints) {
-    return hints.map((group, index) =>
-      <HintGroup hints={group} key={toKey(group, index)} />
-    )
-  }
 
   function renderPuzzle(data) {
     return data.map((row, rowIndex) => {
@@ -361,10 +361,10 @@ function App() {
     <div className="disable-text-selection">
       <div className="full-grid">
         <div className="column-hints">
-          {renderHints(columnHints)}
+          <HintGroups data={columnHints} />
         </div>
         <div className="row-hints">
-          {renderHints(rowHints)}
+          <HintGroups data={rowHints} />
         </div>
         <div className="nonogram-grid" onTouchEnd={disableTouchAction} onPointerDown={pointerDownHandler} onContextMenu={contextMenuHandler}>
         {/* <div className="nonogram-grid" onPointerDown={pointerDownHandler} onMouseDown={mouseDownHandler} onContextMenu={contextMenuHandler} onTouchStart={touchStartHandler}> */}
