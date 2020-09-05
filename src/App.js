@@ -5,7 +5,7 @@ import getColumnHints from './utils/puzzle/getColumnHints';
 import getRowHints from './utils/puzzle/getRowHints';
 
 function toKey(...values) {
-  return values.map(v => v.toString()).join('_')
+  return values.map(value => value.toString()).join('_')
 }
 
 function HintNumber(props) {
