@@ -135,7 +135,14 @@ class Line {
   }
 }
 
-class Nonogram {
+class NonogramSolver {
+
+  static solve(rowHints, columnHints) {
+    const nonogram = new NonogramSolver(rowHints, columnHints)
+    const solved = nonogram.solve()
+    return { solved, solution: nonogram.solution() }
+  }
+
   constructor(rowHints, columnHints) {
     this.width = columnHints.length;
     this.height = rowHints.length;
@@ -162,10 +169,15 @@ class Nonogram {
     // for (var i = 0; i < this.width; i++) this.columns.push(new Line(columnHints[i]));
   }
 
+  solution() {
+    // convert -1 to 0, otherwise matrix is 1 or -1, we need 0=empty, 1=filled
+    this.matrix.map(row => row.map(col => (col === -1) ? 0 : col))
+  }
+
   getColumn(j) {
     // let result = new Array(this.height).fill().map((_, i) => this.matrix[i][j]);
     return Array.from({length: this.height}, (_, i) => this.matrix[i][j]);
-    return result;
+    // return result;
     // var ans = [];
     // for (var i = 0; i < this.height; i++)
     //   ans.push(this.matrix[i][j]);
@@ -189,7 +201,7 @@ class Nonogram {
     return true;
   }
 
-  solve() {
+  process() {
     do {
       this.changed = false;
       for (var i = 0; i < this.height; i++) {
@@ -207,21 +219,22 @@ class Nonogram {
     return true;
   }
 
-  solvable() {
-    if (!this.solve()) return false;  // Impossible
-    if (!this.isComplete()) return false  // Multiple Solutions
-    return true
+  solve() {
+    if (!this.process()) return false;  // Impossible
+    if (!this.isComplete()) return false;  // Multiple Solutions
+    return true;
   }
 }
 
 const solvable = (rowHints, columnHints) => {
-  let nonogram = new Nonogram(rowHints, columnHints)
-  let result = nonogram.solvable()
-  // convert -1 to 0, otherwise matrix is only 1 or -1 values, we need 0 for empty cells
-  // console.log(nonogram.matrix.map(row => row.map(col => (col === -1) ? 0 : col)))
-  return result
-
-  // return new Nonogram(rowHints, columnHints).solvable()
+  // let nonogram = new NonogramSolver(rowHints, columnHints)
+  // let solved = nonogram.solve()
+  // if (solved) {
+  //   console.log(nonogram.solution())
+  // }
+  const { solved, solution } = NonogramSolver.solve(rowHints, columnHints)
+  // console.log(solution)
+  return solved
 }
 
 export default solvable;
