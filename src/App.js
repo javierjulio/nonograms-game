@@ -3,10 +3,7 @@ import './App.css';
 
 import { getColumnHints } from './utils/puzzle/getColumnHints';
 import { getRowHints } from './utils/puzzle/getRowHints';
-
-function toKey(...values) {
-  return values.map(value => value.toString()).join('_')
-}
+import { toKey } from './utils/react/toKey';
 
 function HintNumber(props) {
   return <div className="hint-num">{props.value}</div>
