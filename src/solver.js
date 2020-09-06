@@ -226,7 +226,7 @@ class NonogramSolver {
   }
 }
 
-const solvable = (rowHints, columnHints) => {
+const solveNonogram = (rowHints, columnHints) => {
   // let nonogram = new NonogramSolver(rowHints, columnHints)
   // let solved = nonogram.solve()
   // if (solved) {
@@ -234,7 +234,7 @@ const solvable = (rowHints, columnHints) => {
   // }
   const { solved, solution } = NonogramSolver.solve(rowHints, columnHints)
   // console.log(solution)
-  return solved
+  return { solved, solution }
 }
 
-export default solvable;
+export { solveNonogram }
