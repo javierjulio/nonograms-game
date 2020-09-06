@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
 
-import getColumnHints from './utils/puzzle/getColumnHints';
-import getRowHints from './utils/puzzle/getRowHints';
+import { getColumnHints } from './utils/puzzle/getColumnHints';
+import { getRowHints } from './utils/puzzle/getRowHints';
 
 function toKey(...values) {
   return values.map(value => value.toString()).join('_')

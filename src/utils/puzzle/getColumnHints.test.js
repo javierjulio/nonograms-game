@@ -1,4 +1,4 @@
-import getColumnHints from './getColumnHints';
+import { getColumnHints } from './getColumnHints';
 
 test('returns column hints for 5x5 puzzle', () => {
   const data = [

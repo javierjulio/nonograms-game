@@ -14,4 +14,4 @@ const sumUniqueHints = (array, callback=null) => {
   }, [0])
 };
 
-export default sumUniqueHints;
+export { sumUniqueHints }

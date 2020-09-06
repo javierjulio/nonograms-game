@@ -31,4 +31,4 @@ const draw = (rowHints, columnHints, rows) => {
   return result;//.replace(/\n +\n/g, '\n\n');
 };
 
-export default draw;
+export { draw }

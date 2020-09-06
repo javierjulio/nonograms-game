@@ -1,4 +1,4 @@
-import sumUniqueHints from './sumUniqueHints'
+import { sumUniqueHints } from './sumUniqueHints'
 
 // Takes a matrix of rows to columns and swaps so its now columns to rows
 //
@@ -24,4 +24,4 @@ const getColumnHints = (data) => {
   return transpose(data).map(row => sumUniqueHints(row))
 }
 
-export default getColumnHints;
+export { getColumnHints }

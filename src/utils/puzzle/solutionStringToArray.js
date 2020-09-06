@@ -9,4 +9,4 @@ const solutionStringToArray = (string, filledValue="█") => {
     )
 }
 
-export default solutionStringToArray;
+export { solutionStringToArray }

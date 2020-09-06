@@ -1,4 +1,4 @@
-import sumUniqueHints from './sumUniqueHints';
+import { sumUniqueHints } from './sumUniqueHints';
 
 test('with all zeros, returns zero as hint', () => {
   const row = [ 0, 0, 0, 0, 0 ]

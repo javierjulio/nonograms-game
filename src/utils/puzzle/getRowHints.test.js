@@ -1,4 +1,4 @@
-import getRowHints from './getRowHints';
+import { getRowHints } from './getRowHints';
 
 test('returns row hints for 5x5 puzzle', () => {
   const data = [

@@ -1,4 +1,4 @@
-import draw from './asciiDraw';
+import { draw } from './asciiDraw';
 
 test('ascii draw', () => {
   const data = [

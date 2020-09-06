@@ -1,4 +1,4 @@
-import solutionStringToArray from './solutionStringToArray';
+import { solutionStringToArray } from './solutionStringToArray';
 
 test('with indentation, parses to an array', () => {
   const sample = `█ █ █ x x

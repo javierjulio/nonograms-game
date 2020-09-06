@@ -85,9 +85,9 @@ function generateRandomPuzzle(rng, rows, cols, values = 1, density = null) {
   // return board;
 }
 
-import getColumnHints from './utils/puzzle/getColumnHints';
-import getRowHints from './utils/puzzle/getRowHints';
-import draw from './utils/puzzle/asciiDraw';
+import { getColumnHints } from './utils/puzzle/getColumnHints';
+import { getRowHints } from './utils/puzzle/getRowHints';
+import { draw } from './utils/puzzle/asciiDraw';
 
 // test('seed random', () => {
 //   const expectedBoard = [
