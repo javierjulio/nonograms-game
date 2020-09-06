@@ -141,8 +141,8 @@ class Nonogram {
     this.height = rowHints.length;
 
     // this.matrix = new Array(this.height).fill().map(() => new Array(this.width).fill(0))
-    // this.matrix = Array.from({length: this.height}, () => new Array(this.width).fill(0))
-    this.matrix = Array.from({length: this.height}, () => new Int8Array(this.width))
+    this.matrix = Array.from({length: this.height}, () => new Array(this.width).fill(0))
+    // this.matrix = Array.from({length: this.height}, () => new Int8Array(this.width))
 
     // this.rows = [];
     // this.columns = [];
