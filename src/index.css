@@ -34,9 +34,6 @@ body {
   display: grid;
   grid-template-areas: ".         column-hints"
                        "row-hints nonogram-grid";
-  grid-template-columns: auto 1fr;
-  /* grid-template-rows: repeat(2, minmax(40px, auto)); */
-  grid-template-rows: auto 1fr;
   grid-gap: 4px;
   touch-action: none; /* Using none here will disable all browser-defined actions started over that element. */
   padding: 1rem;
