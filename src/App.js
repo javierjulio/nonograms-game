@@ -172,7 +172,7 @@ function Puzzle({ data, onComplete }) {
         <div className="row-hints">
           <HintGroups data={rowHints} />
         </div>
-        <div className="nonogram-grid"
+        <div className={`nonogram-grid grid-${data[0].length}x${data.length}`}
           onPointerDown={pointerDownHandler}
           onPointerLeave={pointerLeaveHandler}
           onTouchEnd={disableTouchAction}
@@ -186,12 +186,19 @@ function Puzzle({ data, onComplete }) {
 
 function App() {
   const [data, setData] = useState(
+    // [
+    //   [ 1, 1, 1, 1, 0 ],
+    //   [ 1, 1, 0, 1, 0 ],
+    //   [ 1, 1, 1, 0, 0 ],
+    //   [ 1, 0, 0, 1, 0 ],
+    //   [ 1, 0, 1, 0, 0 ]
+    // ]
     [
-      [ 1, 1, 1, 1, 0 ],
-      [ 1, 1, 0, 1, 0 ],
-      [ 1, 1, 1, 0, 0 ],
-      [ 1, 0, 0, 1, 0 ],
-      [ 1, 0, 1, 0, 0 ]
+      [ 1, 1, 1, 1, 0, 1, 1, 1, 1, 0 ],
+      [ 1, 1, 0, 1, 0, 1, 1, 1, 1, 0 ],
+      [ 1, 1, 1, 0, 0, 1, 1, 1, 1, 0 ],
+      [ 1, 0, 0, 1, 0, 1, 1, 1, 1, 0 ],
+      [ 1, 0, 1, 0, 0, 1, 1, 1, 1, 0 ]
     ]
   )
 
