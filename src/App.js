@@ -185,6 +185,20 @@ function Puzzle({ data, onComplete }) {
 }
 
 function App() {
+
+  // TODO: create puzzleId from data
+  //
+  // > data.flat().join()
+  // > "11110110101110010010101001111011010111001001010100"
+  //
+  // or maintain row separation with comma
+  //
+  // > data2.map(row => row.join('')).join(",")
+  // > "11110,11010,11100,10010,10100,11110,11010,11100,10010,10100"
+  //
+  // which that string, if needed, can be parsed back into a 2d array
+  // > string.split(",").map(row => row.split('').map(i => Number(i)))
+
   const [data, setData] = useState(
     // [
     //   [ 1, 1, 1, 1, 0 ],
