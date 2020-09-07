@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'
 import './App.css';
 
 import { getColumnHints } from './utils/puzzle/getColumnHints';
@@ -16,28 +16,21 @@ function HintGroup(props) {
   return <div className="hint-cell">{numbers}</div>
 }
 
-function HintGroups(props) {
-  return props.data.map((group, index) =>
-    <HintGroup hints={group} key={toKey(group, index)} />
+function HintGroups({ data }) {
+  return data.map((group, index) =>
+    <HintGroup hints={group} key={toKey(data, group, index)} />
   )
 }
 
-function App() {
-  const data = [
-    [ 1, 1, 1, 1, 0 ],
-    [ 1, 1, 0, 1, 0 ],
-    [ 1, 1, 1, 0, 0 ],
-    [ 1, 0, 0, 1, 0 ],
-    [ 1, 0, 1, 0, 0 ]
-  ]
-function GridCells(props) {
-  return props.data.map((row, rowIndex) => {
+function GridCells({ data }) {
+  return data.map((row, rowIndex) => {
     return row.map((_, colIndex) =>
-      <div className="nonogram-cell" title={`row ${rowIndex+1}, column ${colIndex+1}`} key={toKey(rowIndex, colIndex)}></div>
+      <div className="nonogram-cell" title={`row ${rowIndex+1}, column ${colIndex+1}`} key={toKey(data, rowIndex, colIndex)}></div>
     )
   })
 }
 
+function Puzzle({ data, onComplete }) {
   const rowHints = getRowHints(data)
   const columnHints = getColumnHints(data)
 
@@ -160,7 +153,7 @@ function GridCells(props) {
 
     if (JSON.stringify(data) === JSON.stringify(answer)) {
       console.log('SOLVED!!')
-      alert("Solved!")
+      onComplete(answer)
     }
   }
 
@@ -189,6 +182,40 @@ function GridCells(props) {
       </div>
     </div>
   );
+}
+
+function App() {
+  const [data, setData] = useState(
+    [
+      [ 1, 1, 1, 1, 0 ],
+      [ 1, 1, 0, 1, 0 ],
+      [ 1, 1, 1, 0, 0 ],
+      [ 1, 0, 0, 1, 0 ],
+      [ 1, 0, 1, 0, 0 ]
+    ]
+  )
+
+  let newData = [
+    [ 1, 1, 1, 1, 0 ],
+    [ 1, 1, 0, 1, 0 ],
+    [ 1, 1, 1, 0, 0 ],
+    [ 1, 0, 0, 1, 0 ],
+    [ 1, 0, 1, 0, 0 ],
+    [ 1, 1, 1, 1, 0 ],
+    [ 1, 1, 0, 1, 0 ],
+    [ 1, 1, 1, 0, 0 ],
+    [ 1, 0, 0, 1, 0 ],
+    [ 1, 0, 1, 0, 0 ]
+  ]
+
+  const completeHandler = (answer) => {
+    console.log('COMPLETED! Your answer:', answer)
+    setData(newData)
+  }
+
+  return(
+    <Puzzle data={data} onComplete={completeHandler} />
+  )
 }
 
 export default App;
