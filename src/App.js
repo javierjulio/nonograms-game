@@ -30,16 +30,16 @@ function App() {
     [ 1, 0, 0, 1, 0 ],
     [ 1, 0, 1, 0, 0 ]
   ]
+function GridCells(props) {
+  return props.data.map((row, rowIndex) => {
+    return row.map((_, colIndex) =>
+      <div className="nonogram-cell" title={`row ${rowIndex+1}, column ${colIndex+1}`} key={toKey(rowIndex, colIndex)}></div>
+    )
+  })
+}
+
   const rowHints = getRowHints(data)
   const columnHints = getColumnHints(data)
-
-  function renderPuzzle(data) {
-    return data.map((row, rowIndex) => {
-      return row.map((_, colIndex) =>
-        <div className="nonogram-cell" title={`row ${rowIndex+1}, column ${colIndex+1}`} key={toKey(rowIndex, colIndex)}></div>
-      )
-    })
-  }
 
   const contextMenuHandler = (event) => {
     console.log('right click')
@@ -184,7 +184,7 @@ function App() {
           onPointerLeave={pointerLeaveHandler}
           onTouchEnd={disableTouchAction}
           onContextMenu={contextMenuHandler}>
-          {renderPuzzle(data)}
+          <GridCells data={data} />
         </div>
       </div>
     </div>
