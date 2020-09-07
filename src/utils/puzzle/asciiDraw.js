@@ -1,3 +1,5 @@
+// An ascii serializer taken from:
+// https://github.com/ThomasR/nonogram-solver
 const draw = (rowHints, columnHints, rows) => {
   let result = '';
   let maxLength = a => a.map(x => x.length).reduce((max, i) => i > max ? i : max, 0);
