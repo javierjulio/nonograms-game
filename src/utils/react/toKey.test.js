@@ -27,3 +27,11 @@ test('with undefined value it fails', () => {
 test('with any value being undefined it fails', () => {
   expect(() => toKey('', undefined, '')).toThrowError()
 })
+
+test('with null value it fails', () => {
+  expect(() => toKey(null)).toThrowError()
+})
+
+test('with any value being null it fails', () => {
+  expect(() => toKey('', null, '')).toThrowError()
+})
