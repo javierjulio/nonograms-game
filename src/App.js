@@ -73,11 +73,12 @@ function App() {
   }
 
   const getCellFromEvent = (event) => {
-    if (event.pointerType === 'mouse')
-      return event.target.closest('.nonogram-cell')
+    const target = (event.pointerType === 'mouse') ?
+      event.target :
+      document.elementFromPoint(event.clientX, event.clientY)
 
-    let target = document.elementFromPoint(event.clientX, event.clientY)
-    return target.closest('.nonogram-cell')
+    if (target)
+      return target.closest('.nonogram-cell')
   }
 
   const pointerDownHandler = (event) => {
