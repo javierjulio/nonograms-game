@@ -34,7 +34,7 @@ body {
   display: grid;
   grid-template-areas: ".         column-hints"
                        "row-hints nonogram-grid";
-  grid-gap: 4px;
+  grid-gap: 6px;
   touch-action: none; /* Using none here will disable all browser-defined actions started over that element. */
   padding: 1rem;
 }
@@ -60,7 +60,7 @@ body {
 .column-hints .hint-cell {
   align-items: flex-end;
   display: grid;
-  grid-gap: 8px;
+  grid-gap: 6px;
   grid-template-rows: 1fr;
   justify-items: center;
   /* margin-bottom: 4px; */
@@ -79,7 +79,7 @@ body {
   align-items: center;
   display: grid;
   grid-auto-flow: column;
-  grid-gap: 8px;
+  grid-gap: 6px;
   grid-template-columns: 1fr;
   justify-items: flex-end;
   /* margin-right: 4px; */
