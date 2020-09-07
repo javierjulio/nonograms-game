@@ -39,6 +39,7 @@ body {
   grid-template-rows: auto 1fr;
   grid-gap: 4px;
   touch-action: none; /* Using none here will disable all browser-defined actions started over that element. */
+  padding: 1rem;
 }
 .full-grid > :nth-child(1) {
   grid-area: column-hints;
