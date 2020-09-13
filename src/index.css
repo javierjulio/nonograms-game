@@ -112,7 +112,7 @@ body {
   border: 1px solid #ccc;
   height: 36px;
   width: 36px;
-  transition-duration: .2s;
+  transition-duration: .3s;
 }
 
 .nonogram-cell.filled {
