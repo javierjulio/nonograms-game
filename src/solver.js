@@ -171,7 +171,7 @@ class NonogramSolver {
 
   solution() {
     // convert -1 to 0, otherwise matrix is 1 or -1, we need 0=empty, 1=filled
-    this.matrix.map(row => row.map(col => (col === -1) ? 0 : col))
+    return this.matrix.map(row => row.map(col => (col === -1) ? 0 : col))
   }
 
   getColumn(j) {
