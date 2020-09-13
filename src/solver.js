@@ -93,7 +93,6 @@ class Line {
 
     this.realFound = 0;
     for (var j = 0; j < this.length; ++j) {
-      //console.log("TRYING FROM " + i + "...");
       this.rec(0, j);
       if (this.cells[j] === 1)
         break;
@@ -117,7 +116,6 @@ class Line {
       return false;
 
     for (var i = 0; i < this.length; ++i) {
-      // console.log("Checking "+i+" ...");
       if (this.sure[i] === 1)
         continue;
 
@@ -147,26 +145,10 @@ class NonogramSolver {
     this.width = columnHints.length;
     this.height = rowHints.length;
 
-    // this.matrix = new Array(this.height).fill().map(() => new Array(this.width).fill(0))
     this.matrix = Array.from({length: this.height}, () => new Array(this.width).fill(0))
-    // this.matrix = Array.from({length: this.height}, () => new Int8Array(this.width))
-
-    // this.rows = [];
-    // this.columns = [];
 
     this.rows = rowHints.map((hint) => new Line(hint))
     this.columns = columnHints.map((hint) => new Line(hint))
-
-    // this.rows = new Array(this.height).fill().map((_, i) => new Line(rowHints[i]));
-
-    // console.log(temprows, this.rows, JSON.stringify(temprows))
-    // console.log(JSON.stringify(temprows) === JSON.stringify(this.rows))
-
-    // this.rows = Array.from({length: this.height}, (v, i) => new Line(rowHints[i]));
-    // this.columns = new Array(this.width).fill().map((_, i) => new Line(columnHints[i]));
-
-    // for (var i = 0; i < this.height; i++) this.rows.push(new Line(rowHints[i]));
-    // for (var i = 0; i < this.width; i++) this.columns.push(new Line(columnHints[i]));
   }
 
   solution() {
@@ -175,13 +157,7 @@ class NonogramSolver {
   }
 
   getColumn(j) {
-    // let result = new Array(this.height).fill().map((_, i) => this.matrix[i][j]);
     return Array.from({length: this.height}, (_, i) => this.matrix[i][j]);
-    // return result;
-    // var ans = [];
-    // for (var i = 0; i < this.height; i++)
-    //   ans.push(this.matrix[i][j]);
-    // return ans;
   }
 
   updateMatrix(x, y, value) {
@@ -231,11 +207,6 @@ class NonogramSolver {
 }
 
 const solveNonogram = (rowHints, columnHints) => {
-  // let nonogram = new NonogramSolver(rowHints, columnHints)
-  // let solved = nonogram.solve()
-  // if (solved) {
-  //   console.log(nonogram.solution())
-  // }
   const { solved, solution } = NonogramSolver.solve(rowHints, columnHints)
   // console.log(solution)
   return { solved, solution }
