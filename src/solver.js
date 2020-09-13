@@ -22,7 +22,7 @@ class Line {
 
     this.sure = new Array(this.length).fill(0)
     for (var i = 0; i < this.length; i++) {
-      if (this.cells[i] != 0)
+      if (this.cells[i] !== 0)
         this.sure[i] = 1;
     }
 
@@ -31,14 +31,14 @@ class Line {
   }
 
   checkFinal(pos) {
-    for (var i = pos; i < this.length; i++)
-      if (this.cells[i] == 1)
+    for (var j = pos; j < this.length; j++)
+      if (this.cells[j] === 1)
         return;
 
     for (var i = 0; i < this.length; i++) {
-      if (this.ansLine[i] == 0)
+      if (this.ansLine[i] === 0)
         this.ansLine[i] = this.cur[i];
-      else if (this.ansLine[i] != this.cur[i]) {
+      else if (this.ansLine[i] !== this.cur[i]) {
         this.ansLine[i] = 2;
         this.cells[i] = 0; this.sure[i] = 1;
       }
@@ -55,54 +55,54 @@ class Line {
 
     var ok = true;
     for (var i = pos; i < pos + this.groups[g]; i++) {
-      if (this.cells[i] == -1) {
+      if (this.cells[i] === -1) {
         ok = false;
         break;
       }
       this.cur[i] = 1;
     }
 
-    if (pos + this.groups[g] < this.length && this.cells[pos + this.groups[g]] == 1) {
+    if (pos + this.groups[g] < this.length && this.cells[pos + this.groups[g]] === 1) {
       ok = false;
     }
 
     if (ok) {
-      if (g == this.gn - 1)
+      if (g === this.gn - 1)
         this.checkFinal(pos + this.groups[g]);
       else {
-        for (var i = pos + this.groups[g] + 1; i < this.length; ++i) {
-          this.rec(g + 1, i);
-          if (this.cells[i] == 1)
+        for (var j = pos + this.groups[g] + 1; j < this.length; ++j) {
+          this.rec(g + 1, j);
+          if (this.cells[j] === 1)
             break;
         }
       }
     }
 
-    for (var i = pos; i < pos + this.groups[g]; i++) {
-      this.cur[i] = 0;
+    for (var k = pos; k < pos + this.groups[g]; k++) {
+      this.cur[k] = 0;
     }
   }
 
   isFeasible() {
-    if (this.gn == 0) {
+    if (this.gn === 0) {
       for (var i = 0; i < this.length; ++i)
-        if (this.cells[i] == 1)
+        if (this.cells[i] === 1)
           return false;
       return true;
     }
 
     this.realFound = 0;
-    for (var i = 0; i < this.length; ++i) {
+    for (var j = 0; j < this.length; ++j) {
       //console.log("TRYING FROM " + i + "...");
-      this.rec(0, i);
-      if (this.cells[i] == 1)
+      this.rec(0, j);
+      if (this.cells[j] === 1)
         break;
     }
-    return (this.realFound != 0);
+    return (this.realFound !== 0);
   }
 
   isModificationFeasible(pos, val) {
-    if (this.ansLine[pos] == 2 || this.ansLine[pos] == val)
+    if (this.ansLine[pos] === 2 || this.ansLine[pos] === val)
       return true;
 
     var tmp = this.cells[pos];
@@ -118,7 +118,7 @@ class Line {
 
     for (var i = 0; i < this.length; ++i) {
       // console.log("Checking "+i+" ...");
-      if (this.sure[i] == 1)
+      if (this.sure[i] === 1)
         continue;
 
       if (!this.isModificationFeasible(i, 1))
@@ -185,7 +185,7 @@ class NonogramSolver {
   }
 
   updateMatrix(x, y, value) {
-    if (this.matrix[x][y] == 0 && value != 0) {
+    if (this.matrix[x][y] === 0 && value !== 0) {
       this.matrix[x][y] = value;
       this.changed = true;
     }
@@ -194,29 +194,33 @@ class NonogramSolver {
   isComplete() {
     for (var i = 0; i < this.height; i++)
       for (var j = 0; j < this.width; j++)
-        if (this.matrix[i][j] == 0) return false;
-    // for (const row of this.matrix)
-    //   for (const col of row)
-    //     if (col == 0) return false;
+        if (this.matrix[i][j] === 0) return false;
     return true;
   }
 
   process() {
     do {
       this.changed = false;
-      for (var i = 0; i < this.height; i++) {
-        this.rows[i].setCells(this.matrix[i]);
-        if (!this.rows[i].solve()) return false;
-        for (var j = 0; j < this.width; j++) this.updateMatrix(i, j, this.rows[i].cells[j]);
-      }
-
-      for (var i = 0; i < this.width; i++) {
-        this.columns[i].setCells(this.getColumn(i));
-        if (!this.columns[i].solve()) return false;
-        for (var j = 0; j < this.height; j++) this.updateMatrix(j, i, this.columns[i].cells[j]);
-      }
+      this.processRows();
+      this.processColumns();
     } while (this.changed);
     return true;
+  }
+
+  processRows() {
+    for (var i = 0; i < this.height; i++) {
+      this.rows[i].setCells(this.matrix[i]);
+      if (!this.rows[i].solve()) return false;
+      for (var j = 0; j < this.width; j++) this.updateMatrix(i, j, this.rows[i].cells[j]);
+    }
+  }
+
+  processColumns() {
+    for (var i = 0; i < this.width; i++) {
+      this.columns[i].setCells(this.getColumn(i));
+      if (!this.columns[i].solve()) return false;
+      for (var j = 0; j < this.height; j++) this.updateMatrix(j, i, this.columns[i].cells[j]);
+    }
   }
 
   solve() {
