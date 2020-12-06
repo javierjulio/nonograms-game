@@ -7,6 +7,8 @@ import { getColumnHints } from './utils/puzzle/getColumnHints';
 import { getRowHints } from './utils/puzzle/getRowHints';
 import { toKey } from './utils/react/toKey';
 
+import randomPuzzle from "./utils/puzzle/randomPuzzle";
+
 import HintGroupList from "./components/HintGroupList"
 import GridCell from "./components/GridCell"
 
@@ -140,7 +142,8 @@ class Puzzle extends Component {
   }
 }
 
-let rng = seedrandom("Javier");
+const rng = seedrandom("Javier");
+const rngSizes = seedrandom("Javier");
 
 function Board() {
   // TODO: create puzzleId from data
@@ -151,48 +154,28 @@ function Board() {
   // which that string can also be parsed back into a 2d array
   // > string.split(",").map(row => row.split('').map(i => Number(i)))
 
-  const [data, setData] = useState(generateRandomPuzzle(rng, 5, 5))
+  const [data, setData] = useState(randomPuzzle(rng, 5, 5))
   const [answer, setAnswer] = useState(
     Array.from({length: data.length}, () => new Array(data[0].length).fill(-1))
   )
-
-  function randomFromRange(min, max, rng) { // min and max included
-    return Math.floor(rng() * (max - min + 1) + min);
-  }
-
-  function generateRandomPuzzle(rng, rows, cols, values = 1) {
-    return Array.from({length: rows}, () => {
-      let cells = []
-      let num = randomFromRange(1, cols, rng)
-      let value = randomFromRange(0, 1, rng)
-      while (cells.length < cols) {
-        cells.push(...new Array(num).fill(value))
-        value = 1 - value
-        num = randomFromRange(1, cols - cells.length, rng)
-      }
-      return cells
-    })
-  }
 
   let sizes = [ [5, 5], [10, 5] ] // [ [5, 5], [5, 10], [10, 5] ]
   function getNewPuzzle() {
     while (true) {
       console.log('new puzzle')
-      let [rows, columns] = sizes[Math.floor(rng() * sizes.length)]
-      let data = generateRandomPuzzle(rng, rows, columns)
+      let [rows, columns] = sizes[Math.floor(rngSizes() * sizes.length)]
+      let data = randomPuzzle(rng, rows, columns)
       let nonogram = solveNonogram(getRowHints(data), getColumnHints(data))
       if (nonogram.solved) {
-        console.log(nonogram)
         return nonogram.solution;
       }
     }
   }
 
   const completeHandler = () => {
-    console.log('COMPLETED! Your answer:', answer)
-    const newPuzzle = getNewPuzzle()
-    setData(newPuzzle)
-    setAnswer(Array.from({length: newPuzzle.length}, () => new Array(newPuzzle[0].length).fill(-1)))
+    const puzzle = getNewPuzzle()
+    setData(puzzle)
+    setAnswer(Array.from({length: puzzle.length}, () => new Array(puzzle[0].length).fill(-1)))
   }
 
   const updateAnswer = (row, column, value) => {
