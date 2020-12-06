@@ -1,3 +1,18 @@
+# Nonograms
+
+TBD
+
+*Resources*
+If there is precisely one solution, the Nonogram is called uniquely solvable; Nonograms in puzzle collections are usually of this class.
+* https://2ality.com/2018/12/creating-arrays.html#recommended-patterns
+* https://github.com/mikix/nonogram-db/blob/master/FORMAT.md
+* https://github.com/ThomasR/nonogram-solver (ascii draw method)
+* https://fedimser.github.io/nonogram (using this solver for randomly generated puzzles)
+* https://github.com/crispy1989/nonogrammer
+* https://github.com/liouh/picross
+* https://github.com/jokude/react-nonogram
+* http://jsimlo.sk/griddlers/algorithm.php (terminology, algorithms)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
