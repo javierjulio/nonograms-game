@@ -104,10 +104,7 @@ class Puzzle extends Component {
     this.removeActivePointerHandlers()
     this.cellState = null
     this.lastCell = null
-
-    if (this.props.checkAnswer()) {
-      this.props.onComplete()
-    }
+    this.props.actionCompleted()
   }
 
   removeActivePointerHandlers() {
@@ -172,8 +169,8 @@ function Board() {
     }
   }
 
-  const completeHandler = () => {
     const puzzle = getNewPuzzle()
+  const newPuzzle = () => {
     setData(puzzle)
     setAnswer(Array.from({length: puzzle.length}, () => new Array(puzzle[0].length).fill(-1)))
   }
@@ -183,8 +180,7 @@ function Board() {
     setAnswer([...answer])
   }
 
-  // TODO: consolidate checkAnswer and onComplete methods??
-  const checkAnswer = () => {
+  const answered = () => {
     for (let i = 0; i < data.length; i++)
       for (let j = 0; j < data[i].length; j++)
         if (data[i][j] === 1 && answer[i][j] !== 1)
@@ -192,12 +188,18 @@ function Board() {
     return true
   }
 
+  const actionCompleted = () => {
+    if (answered()) {
+      newPuzzle()
+    }
+  }
+
   return (
     <div className="disable-text-selection">
       <div className="full-grid">
         <HintGroupList data={getColumnHints(data)} className="column-hints" />
         <HintGroupList data={getRowHints(data)} className="row-hints" />
-        <Puzzle data={data} answer={answer} onComplete={completeHandler} onUpdateAnswer={updateAnswer} checkAnswer={checkAnswer} />
+        <Puzzle data={data} answer={answer} onUpdateAnswer={updateAnswer} actionCompleted={actionCompleted} />
       </div>
     </div>
   )
