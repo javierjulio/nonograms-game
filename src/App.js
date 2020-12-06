@@ -1,4 +1,4 @@
-import { memo, useState, Component } from 'react';
+import { useState, Component } from 'react';
 import './App.css';
 import { solveNonogram } from './utils/puzzle/solver';
 import seedrandom from 'seedrandom';
@@ -7,28 +7,8 @@ import { getColumnHints } from './utils/puzzle/getColumnHints';
 import { getRowHints } from './utils/puzzle/getRowHints';
 import { toKey } from './utils/react/toKey';
 
-function HintNumber(props) {
-  return <div className="hint-num">{props.value}</div>
-}
-
-function HintGroup(props) {
-  const numbers = props.hints.map((hint, index) =>
-    <HintNumber value={hint} key={toKey(hint, index)} />
-  );
-  return <div className="hint-cell">{numbers}</div>
-}
-
-function HintGroups({ data }) {
-  return data.map((group, index) =>
-    <HintGroup hints={group} key={toKey(data, group, index)} />
-  )
-}
-
-const GridCell = memo(({value, row, column}) => {
-  const classStates = [ "crossed", "filled" ]
-  const className = classStates[value] || ""
-  return <div className={`nonogram-cell ${className}`} data-row={row} data-column={column} title={`row ${row+1}, column ${column+1}`}></div>
-})
+import HintGroupList from "./components/HintGroupList"
+import GridCell from "./components/GridCell"
 
 // for left mouse click its different on pointermove but right mouse click is the same
 // https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#Determining_button_states
@@ -233,12 +213,8 @@ function Board() {
   return (
     <div className="disable-text-selection">
       <div className="full-grid">
-        <div className="column-hints">
-          <HintGroups data={getColumnHints(data)} />
-        </div>
-        <div className="row-hints">
-          <HintGroups data={getRowHints(data)} />
-        </div>
+        <HintGroupList data={getColumnHints(data)} className="column-hints" />
+        <HintGroupList data={getRowHints(data)} className="row-hints" />
         <Puzzle data={data} answer={answer} onComplete={completeHandler} onUpdateAnswer={updateAnswer} checkAnswer={checkAnswer} />
       </div>
     </div>
