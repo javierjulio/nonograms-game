@@ -117,6 +117,16 @@ class Puzzle extends Component {
     this.removeActivePointerHandlers()
   }
 
+  renderGridCells() {
+    return this.props.answer.map((row, rowIndex) => {
+      return row.map((value, colIndex) => {
+        return <GridCell value={value} row={rowIndex} column={colIndex}
+                  key={toKey(this.props.data, rowIndex, colIndex)} />
+        }
+      )
+    })
+  }
+
   render () {
     return (
       <div className={`nonogram-grid grid-${this.props.data[0].length}x${this.props.data.length}`}
@@ -124,18 +134,7 @@ class Puzzle extends Component {
         onPointerLeave={this.pointerLeaveHandler}
         onTouchEnd={this.disableTouchAction}
         onContextMenu={this.disableContextMenu}>
-        {
-          this.props.answer.map((row, rowIndex) => {
-            return row.map((value, colIndex) => {
-              return <GridCell
-                        value={value}
-                        row={rowIndex}
-                        column={colIndex}
-                        key={toKey(this.props.data, rowIndex, colIndex)} />
-              }
-            )
-          })
-        }
+        {this.renderGridCells()}
       </div>
     )
   }
