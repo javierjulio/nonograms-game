@@ -133,6 +133,7 @@ body {
 .nonogram-cell.crossed:before,
 .nonogram-cell.crossed:after {
   background-color: #FFBC42;
+  border-radius: 2px;
   content: "";
   position: absolute;
   margin: auto;
@@ -140,8 +141,8 @@ body {
   right: 0;
   left: 0;
   bottom: 0;
-  height: 5px;
-  width: 90%;
+  height: 4px;
+  width: 75%;
 }
 .nonogram-cell.crossed:before {
   transform: rotate(-45deg);
