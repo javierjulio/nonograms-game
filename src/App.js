@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, Component } from 'react'
 import './App.css';
+import { solveNonogram } from './solver';
+import seedrandom from 'seedrandom';
 
 import { getColumnHints } from './utils/puzzle/getColumnHints';
 import { getRowHints } from './utils/puzzle/getRowHints';
@@ -22,50 +24,43 @@ function HintGroups({ data }) {
   )
 }
 
-function GridCells({ data }) {
-  return data.map((row, rowIndex) => {
-    return row.map((_, colIndex) =>
-      <div className="nonogram-cell" title={`row ${rowIndex+1}, column ${colIndex+1}`} key={toKey(data, rowIndex, colIndex)}></div>
-    )
-  })
-}
+const GridCell = React.memo(({value, row, column}) => {
+  const classStates = [ "crossed", "filled" ]
+  const className = classStates[value] || ""
+  return <div className={`nonogram-cell ${className}`} data-row={row} data-column={column} title={`row ${row+1}, column ${column+1}`}></div>
+})
 
-function Puzzle({ data, onComplete }) {
-  const rowHints = getRowHints(data)
-  const columnHints = getColumnHints(data)
+// for left mouse click its different on pointermove but right mouse click is the same
+// https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#Determining_button_states
+const LEFT_MOUSE = 1
+const RIGHT_MOUSE = 2
 
-  const contextMenuHandler = (event) => {
-    console.log('right click')
+class Puzzle extends Component {
+
+  constructor(props) {
+    super(props)
+    this.lastCell = null;
+    this.cellState = null;
+    this.pointerDownHandler = this.pointerDownHandler.bind(this);
+    this.pointerMoveHandler = this.pointerMoveHandler.bind(this);
+    this.pointerUpHandler = this.pointerUpHandler.bind(this);
+    this.pointerLeaveHandler = this.pointerLeaveHandler.bind(this);
+  }
+
+  disableContextMenu(event) {
     event.preventDefault()
   }
 
-  // for left mouse click its different on pointermove but right mouse click is the same
-  // https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#Determining_button_states
-  const LEFT_MOUSE_CLICK = 1
-  const RIGHT_MOUSE_CLICK = 2
-
-  let lastCell;
-
-  const EMPTY = -1;
-  const CROSSED = 0;
-  const FILLED = 1;
-  let cellState;
-
-  const updateCellForState = (cell, state) => {
-    if (state === FILLED) {
-      cell.classList.remove('crossed')
-      cell.classList.add('filled')
-    }
-    else if (state === CROSSED) {
-      cell.classList.remove('filled')
-      cell.classList.add('crossed')
-    }
-    else {
-      cell.classList.remove('filled', 'crossed')
-    }
+  // using `touch-action: none;` works but is not enough to prevent a quick double tap to zoom
+  disableTouchAction(event) {
+    event.preventDefault();
   }
 
-  const getCellFromEvent = (event) => {
+  // EMPTY = -1;  // rename to UNKNOWN
+  // CROSSED = 0; // rename to EMPTY
+  // FILLED = 1;
+
+  getCellFromEvent(event) {
     const target = (event.pointerType === 'mouse') ?
       event.target :
       document.elementFromPoint(event.clientX, event.clientY)
@@ -74,168 +69,185 @@ function Puzzle({ data, onComplete }) {
       return target.closest('.nonogram-cell')
   }
 
-  const pointerDownHandler = (event) => {
-    console.log('pointerDown', event.pointerType, event.button, event.buttons)
-    lastCell = null
-    cellState = null
+  pointerDownHandler(event) {
+    this.lastCell = null
+    this.cellState = null
 
-    let cell = getCellFromEvent(event)
+    const cell = this.getCellFromEvent(event)
 
     if (!cell)
       return;
 
-    if (event.buttons === LEFT_MOUSE_CLICK) { // same value for left mouse, touch contact, pen contact
-      if (cell.classList.contains('crossed')) {
-        cellState = EMPTY
+    this.lastCell = cell
+
+    if (event.buttons === LEFT_MOUSE) {
+      if (this.props.answer[cell.dataset.row][cell.dataset.column] === 0) { // crossed
+        this.cellState = -1 // unknown
       }
-      else if (cell.classList.contains('filled')) {
-        cellState = CROSSED
+      else if (this.props.answer[cell.dataset.row][cell.dataset.column] === 1) { // filled
+        this.cellState = 0 // crossed
       }
       else {
-        cellState = FILLED
+        this.cellState = 1 // filled
       }
     }
-    else if (event.buttons === RIGHT_MOUSE_CLICK) {
-      cellState = CROSSED
+    else if (event.buttons === RIGHT_MOUSE) {
+      this.cellState = 0 // CROSSED
     }
 
-    if (cellState !== null) {
-      updateCellForState(cell, cellState)
-      document.addEventListener('pointermove', pointerMoveHandler)
-      document.addEventListener('pointerup', pointerUpHandler)
+    if (this.cellState !== null) {
+      this.props.onUpdateAnswer(cell.dataset.row, cell.dataset.column, this.cellState)
+      document.addEventListener('pointermove', this.pointerMoveHandler)
+      document.addEventListener('pointerup', this.pointerUpHandler)
     }
   }
 
-  const pointerMoveHandler = (event) => {
-    console.log('pointerMove', event.pointerType, event.button, event.buttons)
+  pointerMoveHandler(event) {
+    const cell = this.getCellFromEvent(event)
 
-    let cell = getCellFromEvent(event)
-
-    if (!cell || lastCell === cell)
+    if (!cell || this.lastCell === cell)
       return;
 
-    if (cellState === EMPTY || (!cell.classList.contains('crossed') && !cell.classList.contains('filled'))) {
-      updateCellForState(cell, cellState)
+    const cellValue = this.props.answer[cell.dataset.row][cell.dataset.column]
+    // if update action is to clear/empty and current cell is NOT empty, update it
+    // or if update action is to fill/cross (NOT empty) and current cell is empty, update it
+    if ((this.cellState === -1 && cellValue !== -1) || (this.cellState !== -1 && cellValue === -1)) {
+      this.props.onUpdateAnswer(cell.dataset.row, cell.dataset.column, this.cellState)
     }
 
-    lastCell = cell
+    this.lastCell = cell
   }
 
-  // using touch-action: none; works but is not enough to prevent a quick double tap to zoom
-  const disableTouchAction = (event) => {
-    console.log('disable touch action');
-    event.preventDefault();
+  pointerUpHandler(event) {
+    this.removeActivePointerHandlers()
+    this.cellState = null
+    this.lastCell = null
+
+    if (this.props.checkAnswer()) {
+      this.props.onComplete()
+    }
   }
 
-  const pointerUpHandler = (event) => {
-    console.log('pointerUp');
+  removeActivePointerHandlers() {
+    document.removeEventListener('pointermove', this.pointerMoveHandler)
+    document.removeEventListener('pointerup', this.pointerUpHandler)
+  }
 
-    document.removeEventListener('pointermove', pointerMoveHandler)
-    document.removeEventListener('pointerup', pointerUpHandler)
+  pointerLeaveHandler(event) {
+    this.removeActivePointerHandlers()
+  }
 
-    cellState = null;
-    lastCell = null;
+  render () {
+    return (
+      <div className={`nonogram-grid grid-${this.props.data[0].length}x${this.props.data.length}`}
+        onPointerDown={this.pointerDownHandler}
+        onPointerLeave={this.pointerLeaveHandler}
+        onTouchEnd={this.disableTouchAction}
+        onContextMenu={this.disableContextMenu}>
+        {
+          this.props.answer.map((row, rowIndex) => {
+            return row.map((value, colIndex) => {
+              return <GridCell
+                        value={value}
+                        row={rowIndex}
+                        column={colIndex}
+                        key={toKey(this.props.data, rowIndex, colIndex)} />
+              }
+            )
+          })
+        }
+      </div>
+    )
+  }
+}
 
-    // 1) Reset answer each time
-    // 2) Set cell default value to 0, otherwise all cells have to
-    //    be updated, only the correct ones should matter
-    let answer = new Array(data.length).fill().map(() => new Array(data[0].length).fill(0))
+let rng = seedrandom("Javier");
 
-    document.querySelectorAll('.nonogram-cell').forEach((value, index) => {
-      let numCols = answer[0].length
-      let rowIndex = Math.floor(index / numCols)
-      let colIndex = index % numCols
+function Board() {
+  // TODO: create puzzleId from data
+  //
+  // > data.map(row => row.join('')).join(",")
+  // > "11110,11010,11100,10010,10100,11110,11010,11100,10010,10100"
+  //
+  // which that string can also be parsed back into a 2d array
+  // > string.split(",").map(row => row.split('').map(i => Number(i)))
 
-      if (value.classList.contains('filled')) {
-        answer[rowIndex][colIndex] = 1
+  const [data, setData] = useState(generateRandomPuzzle(rng, 5, 5))
+  const [answer, setAnswer] = useState(
+    Array.from({length: data.length}, () => new Array(data[0].length).fill(-1))
+  )
+
+  function randomFromRange(min, max, rng) { // min and max included
+    return Math.floor(rng() * (max - min + 1) + min);
+  }
+
+  function generateRandomPuzzle(rng, rows, cols, values = 1) {
+    return Array.from({length: rows}, () => {
+      let cells = []
+      let num = randomFromRange(1, cols, rng)
+      let value = randomFromRange(0, 1, rng)
+      while (cells.length < cols) {
+        cells.push(...new Array(num).fill(value))
+        value = 1 - value
+        num = randomFromRange(1, cols - cells.length, rng)
       }
+      return cells
     })
+  }
 
-    if (JSON.stringify(data) === JSON.stringify(answer)) {
-      console.log('SOLVED!!')
-      onComplete(answer)
+  let sizes = [ [5, 5], [10, 5] ] // [ [5, 5], [5, 10], [10, 5] ]
+  function getNewPuzzle() {
+    while (true) {
+      console.log('new puzzle')
+      let [rows, columns] = sizes[Math.floor(rng() * sizes.length)]
+      let data = generateRandomPuzzle(rng, rows, columns)
+      let nonogram = solveNonogram(getRowHints(data), getColumnHints(data))
+      if (nonogram.solved) {
+        console.log(nonogram)
+        return nonogram.solution;
+      }
     }
   }
 
-  const pointerLeaveHandler = (event) => {
-    console.log('pointerLeave');
-    document.removeEventListener('pointermove', pointerMoveHandler)
-    document.removeEventListener('pointerup', pointerUpHandler)
+  const completeHandler = () => {
+    console.log('COMPLETED! Your answer:', answer)
+    const newPuzzle = getNewPuzzle()
+    setData(newPuzzle)
+    setAnswer(Array.from({length: newPuzzle.length}, () => new Array(newPuzzle[0].length).fill(-1)))
+  }
+
+  const updateAnswer = (row, column, value) => {
+    answer[row][column] = value
+    setAnswer([...answer])
+  }
+
+  // TODO: consolidate checkAnswer and onComplete methods??
+  const checkAnswer = () => {
+    for (let i = 0; i < data.length; i++)
+      for (let j = 0; j < data[i].length; j++)
+        if (data[i][j] === 1 && answer[i][j] !== 1)
+          return false
+    return true
   }
 
   return (
     <div className="disable-text-selection">
       <div className="full-grid">
         <div className="column-hints">
-          <HintGroups data={columnHints} />
+          <HintGroups data={getColumnHints(data)} />
         </div>
         <div className="row-hints">
-          <HintGroups data={rowHints} />
+          <HintGroups data={getRowHints(data)} />
         </div>
-        <div className={`nonogram-grid grid-${data[0].length}x${data.length}`}
-          onPointerDown={pointerDownHandler}
-          onPointerLeave={pointerLeaveHandler}
-          onTouchEnd={disableTouchAction}
-          onContextMenu={contextMenuHandler}>
-          <GridCells data={data} />
-        </div>
+        <Puzzle data={data} answer={answer} onComplete={completeHandler} onUpdateAnswer={updateAnswer} checkAnswer={checkAnswer} />
       </div>
     </div>
-  );
+  )
 }
 
 function App() {
-
-  // TODO: create puzzleId from data
-  //
-  // > data.flat().join()
-  // > "11110110101110010010101001111011010111001001010100"
-  //
-  // or maintain row separation with comma
-  //
-  // > data2.map(row => row.join('')).join(",")
-  // > "11110,11010,11100,10010,10100,11110,11010,11100,10010,10100"
-  //
-  // which that string, if needed, can be parsed back into a 2d array
-  // > string.split(",").map(row => row.split('').map(i => Number(i)))
-
-  const [data, setData] = useState(
-    // [
-    //   [ 1, 1, 1, 1, 0 ],
-    //   [ 1, 1, 0, 1, 0 ],
-    //   [ 1, 1, 1, 0, 0 ],
-    //   [ 1, 0, 0, 1, 0 ],
-    //   [ 1, 0, 1, 0, 0 ]
-    // ]
-    [
-      [ 1, 1, 1, 1, 0, 1, 1, 1, 1, 0 ],
-      [ 1, 1, 0, 1, 0, 1, 1, 1, 1, 0 ],
-      [ 1, 1, 1, 0, 0, 1, 1, 1, 1, 0 ],
-      [ 1, 0, 0, 1, 0, 1, 1, 1, 1, 0 ],
-      [ 1, 0, 1, 0, 0, 1, 1, 1, 1, 0 ]
-    ]
-  )
-
-  let newData = [
-    [ 1, 1, 1, 1, 0 ],
-    [ 1, 1, 0, 1, 0 ],
-    [ 1, 1, 1, 0, 0 ],
-    [ 1, 0, 0, 1, 0 ],
-    [ 1, 0, 1, 0, 0 ],
-    [ 1, 1, 1, 1, 0 ],
-    [ 1, 1, 0, 1, 0 ],
-    [ 1, 1, 1, 0, 0 ],
-    [ 1, 0, 0, 1, 0 ],
-    [ 1, 0, 1, 0, 0 ]
-  ]
-
-  const completeHandler = (answer) => {
-    console.log('COMPLETED! Your answer:', answer)
-    setData(newData)
-  }
-
   return(
-    <Puzzle data={data} onComplete={completeHandler} />
+    <Board />
   )
 }
 
