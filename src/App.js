@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react'
+import { memo, useState, Component } from 'react';
 import './App.css';
 import { solveNonogram } from './utils/puzzle/solver';
 import seedrandom from 'seedrandom';
@@ -24,7 +24,7 @@ function HintGroups({ data }) {
   )
 }
 
-const GridCell = React.memo(({value, row, column}) => {
+const GridCell = memo(({value, row, column}) => {
   const classStates = [ "crossed", "filled" ]
   const className = classStates[value] || ""
   return <div className={`nonogram-cell ${className}`} data-row={row} data-column={column} title={`row ${row+1}, column ${column+1}`}></div>
