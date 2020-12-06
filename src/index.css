@@ -34,7 +34,7 @@ body {
   display: grid;
   grid-template-areas: ".         column-hints"
                        "row-hints nonogram-grid";
-  grid-gap: 6px;
+  grid-gap: 4px;
   touch-action: none; /* Using none here will disable all browser-defined actions started over that element. */
   padding: 1rem;
 }
@@ -88,7 +88,9 @@ body {
 }
 
 .nonogram-grid {
+  background-color: #ccc;
   border: 1px solid #ccc;
+  border-radius: 4px;
   cursor: pointer;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -111,8 +113,9 @@ body {
 .nonogram-cell {
   background-color: white;
   border: 1px solid #ccc;
-  height: 36px;
-  width: 36px;
+  border-radius: 4px;
+  height: 32px;
+  width: 32px;
   transition-duration: .3s;
 }
 
