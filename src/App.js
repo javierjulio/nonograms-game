@@ -1,6 +1,6 @@
 import React, { useState, Component } from 'react'
 import './App.css';
-import { solveNonogram } from './solver';
+import { solveNonogram } from './utils/puzzle/solver';
 import seedrandom from 'seedrandom';
 
 import { getColumnHints } from './utils/puzzle/getColumnHints';
