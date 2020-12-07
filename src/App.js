@@ -101,19 +101,15 @@ class Puzzle extends Component {
   }
 
   pointerUpHandler(event) {
-    this.removeActivePointerHandlers()
+    document.removeEventListener('pointermove', this.pointerMoveHandler)
+    document.removeEventListener('pointerup', this.pointerUpHandler)
     this.cellState = null
     this.lastCell = null
     this.props.actionCompleted()
   }
 
-  removeActivePointerHandlers() {
-    document.removeEventListener('pointermove', this.pointerMoveHandler)
-    document.removeEventListener('pointerup', this.pointerUpHandler)
-  }
-
   pointerLeaveHandler(event) {
-    this.removeActivePointerHandlers()
+    document.removeEventListener('pointermove', this.pointerMoveHandler)
   }
 
   renderGridCells() {
