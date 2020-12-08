@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { toKey } from '../utils/react/toKey';
 import GridCell from "./GridCell"
+import CellState from "../constants/CellState"
 
 // for left mouse click its different on pointermove but right mouse click is the same
 // https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#Determining_button_states
@@ -27,10 +28,6 @@ class Puzzle extends Component {
     event.preventDefault();
   }
 
-  // EMPTY = -1;  // rename to UNKNOWN
-  // CROSSED = 0; // rename to EMPTY
-  // FILLED = 1;
-
   getCellFromEvent(event) {
     const target = (event.pointerType === 'mouse') ?
       event.target :
@@ -52,18 +49,18 @@ class Puzzle extends Component {
     this.lastCell = cell
 
     if (event.isPrimary) {
-      if (this.props.answer[cell.dataset.row][cell.dataset.column] === 0) { // crossed
-        this.cellState = -1 // unknown
+      if (this.props.answer[cell.dataset.row][cell.dataset.column] === CellState.EMPTY) {
+        this.cellState = CellState.UNKNOWN
       }
-      else if (this.props.answer[cell.dataset.row][cell.dataset.column] === 1) { // filled
-        this.cellState = 0 // crossed
+      else if (this.props.answer[cell.dataset.row][cell.dataset.column] === CellState.FILLED) {
+        this.cellState = CellState.EMPTY
       }
       else {
-        this.cellState = 1 // filled
+        this.cellState = CellState.FILLED
       }
     }
     else if (event.buttons === RIGHT_MOUSE_POINTER) {
-      this.cellState = 0 // CROSSED
+      this.cellState = CellState.EMPTY
     }
 
     if (this.cellState !== null) {
@@ -82,7 +79,7 @@ class Puzzle extends Component {
     const cellValue = this.props.answer[cell.dataset.row][cell.dataset.column]
     // if update action is to clear/empty and current cell is NOT empty, update it
     // or if update action is to fill/cross (NOT empty) and current cell is empty, update it
-    if ((this.cellState === -1 && cellValue !== -1) || (this.cellState !== -1 && cellValue === -1)) {
+    if ((this.cellState === CellState.UNKNOWN && cellValue !== CellState.UNKNOWN) || (this.cellState !== CellState.UNKNOWN && cellValue === CellState.UNKNOWN)) {
       this.props.onUpdateAnswer(cell.dataset.row, cell.dataset.column, this.cellState)
     }
 
