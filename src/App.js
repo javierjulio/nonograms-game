@@ -147,7 +147,25 @@ function Board({ data, rowHints, columnHints, newPuzzle }) {
   // > string.split(",").map(row => row.split('').map(i => Number(i)))
 
   const [answer, setAnswer] = useState(() => {
-    return Array.from({length: data.length}, () => new Array(data[0].length).fill(-1))
+    let result = Array.from({length: data.length}, () => new Array(data[0].length).fill(-1))
+    // find lines where sum is 0 and cross out each cell
+    for (let i = 0; i < data.length; i++) {
+      const row = data[i]
+      if (row.reduce((a, b) => a + b, 0) === 0) {
+        for (let x = 0; x < row.length; x++) {
+          result[i][x] = 0
+        }
+      }
+    }
+    for (let i = 0; i < data.length; i++) {
+      const col = data.map((row) => row[i])
+      if (col.reduce((a, b) => a + b, 0) === 0) {
+        for (let x = 0; x < col.length; x++) {
+          result[x][i] = 0
+        }
+      }
+    }
+    return result
   })
 
   const updateAnswer = (row, column, value) => {
