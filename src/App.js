@@ -9,7 +9,7 @@ import { toKey } from './utils/react/toKey';
 
 import randomPuzzle from "./utils/puzzle/randomPuzzle";
 
-import HintGroupList from "./components/HintGroupList"
+import Hints from "./components/Hints"
 import GridCell from "./components/GridCell"
 
 // for left mouse click its different on pointermove but right mouse click is the same
@@ -116,7 +116,7 @@ class Puzzle extends Component {
     return this.props.answer.map((row, rowIndex) => {
       return row.map((value, colIndex) => {
         return <GridCell value={value} row={rowIndex} column={colIndex}
-                  key={toKey(this.props.data, rowIndex, colIndex)} />
+                  key={toKey(rowIndex, colIndex)} />
         }
       )
     })
@@ -124,7 +124,7 @@ class Puzzle extends Component {
 
   render () {
     return (
-      <div className={`nonogram-grid grid-${this.props.data[0].length}x${this.props.data.length}`}
+      <div className={`nonogram-grid grid-${this.props.cols}x${this.props.rows}`}
         onPointerDown={this.pointerDownHandler}
         onPointerLeave={this.pointerLeaveHandler}
         onTouchEnd={this.disableTouchAction}
@@ -135,10 +135,9 @@ class Puzzle extends Component {
   }
 }
 
-const rng = seedrandom("Javier");
-const rngSizes = seedrandom("Javier");
+const rng = seedrandom("JAVIERJ");
 
-function Board() {
+function Board({ data, rowHints, columnHints, newPuzzle }) {
   // TODO: create puzzleId from data
   //
   // > data.map(row => row.join('')).join(",")
@@ -147,29 +146,9 @@ function Board() {
   // which that string can also be parsed back into a 2d array
   // > string.split(",").map(row => row.split('').map(i => Number(i)))
 
-  const [data, setData] = useState(randomPuzzle(rng, 5, 5))
-  const [answer, setAnswer] = useState(
-    Array.from({length: data.length}, () => new Array(data[0].length).fill(-1))
-  )
-
-  let sizes = [ [5, 5], [10, 5] ] // [ [5, 5], [5, 10], [10, 5] ]
-  function getNewPuzzle() {
-    while (true) {
-      console.log('new puzzle')
-      let [rows, columns] = sizes[Math.floor(rngSizes() * sizes.length)]
-      let data = randomPuzzle(rng, rows, columns)
-      let nonogram = solveNonogram(getRowHints(data), getColumnHints(data))
-      if (nonogram.solved) {
-        return nonogram.solution;
-      }
-    }
-  }
-
-    const puzzle = getNewPuzzle()
-  const newPuzzle = () => {
-    setData(puzzle)
-    setAnswer(Array.from({length: puzzle.length}, () => new Array(puzzle[0].length).fill(-1)))
-  }
+  const [answer, setAnswer] = useState(() => {
+    return Array.from({length: data.length}, () => new Array(data[0].length).fill(-1))
+  })
 
   const updateAnswer = (row, column, value) => {
     answer[row][column] = value
@@ -193,17 +172,39 @@ function Board() {
   return (
     <div className="disable-text-selection">
       <div className="full-grid">
-        <HintGroupList data={getColumnHints(data)} className="column-hints" />
-        <HintGroupList data={getRowHints(data)} className="row-hints" />
-        <Puzzle data={data} answer={answer} onUpdateAnswer={updateAnswer} actionCompleted={actionCompleted} />
+        <Hints type="column" data={columnHints} puzzle={answer} className="column-hints" />
+        <Hints type="row" data={rowHints} puzzle={answer} className="row-hints" />
+        <Puzzle rows={rowHints.length} cols={columnHints.length}
+          answer={answer} onUpdateAnswer={updateAnswer} actionCompleted={actionCompleted} />
       </div>
     </div>
   )
 }
 
 function App() {
+  const sizes = [ [5, 5] ] // [10, 5] ]
+  const generateSolvablePuzzle = () => {
+    while (true) {
+      const [rows, columns] = sizes[Math.floor(rng() * sizes.length)]
+      const data = randomPuzzle(rng, rows, columns)
+      const rowHints = getRowHints(data)
+      const columnHints = getColumnHints(data)
+      const nonogram = solveNonogram(rowHints.map((i) => i.map((c) => c.total)), columnHints.map((i) => i.map((c) => c.total)))
+      console.log(`NEW PUZZLE ${columns}x${rows}`, nonogram.solved, nonogram.solution)
+      if (nonogram.solved) {
+        return { id: new Date().getTime(), puzzle: nonogram.solution, rowHints, columnHints }
+      }
+    }
+  }
+
+  const [data, setData] = useState(() => generateSolvablePuzzle())
+
+  const newPuzzle = () => {
+    setData(generateSolvablePuzzle())
+  }
+
   return(
-    <Board />
+    <Board key={data.id} data={data.puzzle} rowHints={data.rowHints} columnHints={data.columnHints} newPuzzle={newPuzzle} />
   )
 }
 

@@ -2,9 +2,9 @@ import { render, fireEvent, createEvent } from '@testing-library/react';
 // import userEvent from '@testing-library/user-event'
 import App from './App';
 
-test('renders a hint value of 5', () => {
+test('renders a hint value of 3', () => {
   const { getAllByText } = render(<App />);
-  const hints = getAllByText("5");
+  const hints = getAllByText("3");
   hints.map(el => expect(el).toBeInTheDocument());
 });
 

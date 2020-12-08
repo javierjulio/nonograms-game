@@ -50,6 +50,7 @@ body {
 
 .hint-num {
   line-height: 1;
+  transition: color .3s ease;
 }
 
 .column-hints {
@@ -116,12 +117,19 @@ body {
   border-radius: 4px;
   height: 32px;
   width: 32px;
-  transition-duration: .3s;
+  transition: all .4s ease;
+  transition-duration: .2s;
 }
+/* .nonogram-cell:hover {
+  border-color: #1A59FF;
+} */
 
 .nonogram-cell.filled {
   background-color: #333;
 }
+/* .nonogram-cell.filled:hover {
+  border-color: #ccc;
+} */
 
 .nonogram-cell.crossed {
   display: flex;
