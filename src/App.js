@@ -14,7 +14,6 @@ import GridCell from "./components/GridCell"
 
 // for left mouse click its different on pointermove but right mouse click is the same
 // https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#Determining_button_states
-const LEFT_MOUSE = 1
 const RIGHT_MOUSE_POINTER = 2
 
 class Puzzle extends Component {
@@ -62,7 +61,7 @@ class Puzzle extends Component {
 
     this.lastCell = cell
 
-    if (event.buttons === LEFT_MOUSE) {
+    if (event.isPrimary) {
       if (this.props.answer[cell.dataset.row][cell.dataset.column] === 0) { // crossed
         this.cellState = -1 // unknown
       }
