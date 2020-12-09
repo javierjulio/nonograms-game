@@ -5,6 +5,7 @@ import CellState from "../constants/CellState"
 
 // for left mouse click its different on pointermove but right mouse click is the same
 // https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#Determining_button_states
+const MAIN_POINTER = 1
 const RIGHT_MOUSE_POINTER = 2
 
 class Puzzle extends Component {
@@ -48,7 +49,7 @@ class Puzzle extends Component {
 
     this.lastCell = cell
 
-    if (event.isPrimary) {
+    if (event.buttons === MAIN_POINTER) {
       if (this.props.answer[cell.dataset.row][cell.dataset.column] === CellState.EMPTY) {
         this.cellState = CellState.UNKNOWN
       }
