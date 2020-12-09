@@ -10,7 +10,7 @@ import Board from "./components/Board"
 const rng = seedrandom("Javier");
 
 function App() {
-  const sizes = [ [5, 5] ] // [10, 5] ]
+  const sizes = [ [5, 5], [10, 5] ]
 
   // TODO: create puzzleId from data
   //
