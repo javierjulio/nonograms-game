@@ -2,10 +2,12 @@
   "name": "nonograms",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://javierjulio.github.io/nonograms-game",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.1.2",
+    "gh-pages": "^3.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
@@ -17,7 +19,9 @@
     "test": "react-scripts test --watchAll=false",
     "test:watch": "react-scripts test --watchAll",
     "eject": "react-scripts eject",
-    "e2e": "jest -c jest.e2e.config.js"
+    "e2e": "jest -c jest.e2e.config.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
