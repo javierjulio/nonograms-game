@@ -1,8 +1,18 @@
 # Nonograms
 
-TBD
+This is a game of endless, randomly generated but solvable, Nonogram puzzles.
 
-*Resources*
+## Development
+
+1. Install [Node.js v12+](https://nodejs.org/) and Yarn
+2. `yarn install`
+3. `npm test`
+4. `npm run start`
+
+For e2e tests: `npm run e2e`
+
+## Resources and Notes
+
 If there is precisely one solution, the Nonogram is called uniquely solvable; Nonograms in puzzle collections are usually of this class.
 * https://2ality.com/2018/12/creating-arrays.html#recommended-patterns
 * https://github.com/mikix/nonogram-db/blob/master/FORMAT.md
@@ -12,6 +22,8 @@ If there is precisely one solution, the Nonogram is called uniquely solvable; No
 * https://github.com/liouh/picross
 * https://github.com/jokude/react-nonogram
 * http://jsimlo.sk/griddlers/algorithm.php (terminology, algorithms)
+
+# Create React App Info
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
