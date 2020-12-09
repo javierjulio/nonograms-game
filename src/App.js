@@ -7,7 +7,7 @@ import { getRowHints } from './utils/puzzle/getRowHints';
 import randomPuzzle from "./utils/puzzle/randomPuzzle";
 import Board from "./components/Board"
 
-const rng = seedrandom("JAVIERJ");
+const rng = seedrandom("Javier");
 
 function App() {
   const sizes = [ [5, 5] ] // [10, 5] ]
