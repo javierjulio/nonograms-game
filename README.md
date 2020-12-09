@@ -11,6 +11,10 @@ This is a game of endless, randomly generated but solvable, Nonogram puzzles.
 
 For e2e tests: `npm run e2e`
 
+## Deployment
+
+To deploy a new release, just run `npm run deploy` to [release on GitHub Pages](https://create-react-app.dev/docs/deployment/#github-pages).
+
 ## Resources and Notes
 
 If there is precisely one solution, the Nonogram is called uniquely solvable; Nonograms in puzzle collections are usually of this class.
