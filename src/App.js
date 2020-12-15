@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { solveNonogram } from './utils/puzzle/solver';
 import seedrandom from 'seedrandom';
@@ -34,14 +34,18 @@ function App() {
     }
   }
 
-  const [data, setData] = useState(() => generateSolvablePuzzle())
+  const [data, setData] = useState({seed: "", puzzle: [], rowHints: [], columnHints: []})
+
+  useEffect(() => {
+    setData(generateSolvablePuzzle())
+  }, []);
 
   const newPuzzle = () => {
     setData(generateSolvablePuzzle())
   }
 
   return(
-    <Board key={data.seed} data={data.puzzle} rowHints={data.rowHints} columnHints={data.columnHints} newPuzzle={newPuzzle} />
+    <Board data={data.puzzle} rowHints={data.rowHints} columnHints={data.columnHints} newPuzzle={newPuzzle} />
   )
 }
 

@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Hints from "./Hints"
 import Puzzle from "./Puzzle"
 import CellState from "../constants/CellState"
 
 function Board({ data, rowHints, columnHints, newPuzzle }) {
-  const [answer, setAnswer] = useState(() => {
+  const [answer, setAnswer] = useState([])
+
+  const updateAnswer = (row, column, value) => {
+    answer[row][column] = value
+    setAnswer([...answer])
+  }
+
+  useEffect(() => {
     let result = Array.from({length: data.length}, () => new Array(data[0].length).fill(CellState.UNKNOWN))
     // find lines where sum is 0 and cross out each cell
     for (let i = 0; i < data.length; i++) {
@@ -23,13 +30,8 @@ function Board({ data, rowHints, columnHints, newPuzzle }) {
         }
       }
     }
-    return result
-  })
-
-  const updateAnswer = (row, column, value) => {
-    answer[row][column] = value
-    setAnswer([...answer])
-  }
+    setAnswer(result)
+  }, [data, rowHints, columnHints])
 
   const answered = () => {
     for (let i = 0; i < data.length; i++)
