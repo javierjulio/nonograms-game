@@ -8,13 +8,13 @@ function HintGroup({ hints, line }) {
   }
 
   const numbers = hints.map((hint, index) => {
-    let styles = {}
+    let classNames = ["hint-num"]
 
     if (isHintSolved(hint, line)) {
-      styles = {color: "#AAA"}
+      classNames.push("text-muted")
     }
 
-    return <div className="hint-num" style={styles} key={toKey(hint, index)}>{hint.total}</div>
+    return <div className={classNames.join(" ")} key={toKey(hint, index)}>{hint.total}</div>
   });
 
   return <div className="hint-cell">{numbers}</div>
