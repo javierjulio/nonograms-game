@@ -45,7 +45,9 @@ function App() {
   }
 
   return(
-    <Board data={data.puzzle} rowHints={data.rowHints} columnHints={data.columnHints} newPuzzle={newPuzzle} />
+    <div className="app-container">
+      <Board data={data.puzzle} rowHints={data.rowHints} columnHints={data.columnHints} newPuzzle={newPuzzle} />
+    </div>
   )
 }
 
