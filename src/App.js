@@ -19,7 +19,7 @@ function App() {
     const seed = Date.now().toString(36)
     const rng = seedrandom(seed)
 
-    const sizes = [ [5, 5], [10, 5] ]
+    const sizes = [ [5, 5], [10, 5], [5, 10], [10, 10] ]
 
     while (true) {
       const [rows, columns] = sizes[Math.floor(rng() * sizes.length)]
