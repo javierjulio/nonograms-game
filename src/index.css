@@ -119,6 +119,11 @@ body {
   grid-template-columns: repeat(10, 1fr);
 }
 
+.nonogram-grid.grid-10x10 {
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+}
+
 .nonogram-grid:active,
 .nonogram-cell:active {
   cursor: pointer;
