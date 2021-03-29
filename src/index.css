@@ -9,9 +9,12 @@
   --filled-background-color: #000;
   --filled-background-image: linear-gradient(120deg, #434343 0%, black 100%);
   --crossed-background-color: #FFBC42;
+  --divider-background-color: #52EF4F;
 
   --grid-cell-height: 32px;
   --grid-cell-width: 32px;
+  --divider-size: 3px;
+  --divider-z-index: 5;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -25,6 +28,7 @@
     /* --filled-background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); */
     --filled-background-image: linear-gradient(-120deg, #dfe9f3 0%, white 100%);
     --crossed-background-color: #FFBC42;
+    --divider-background-color: #FF42E3;
   }
 }
 
@@ -150,15 +154,65 @@ body {
 
 .nonogram-grid.grid-5x10 {
   grid-template-rows: repeat(10, 1fr);
+  position: relative;
+}
+.nonogram-grid.grid-5x10:after {
+  background-color: var(--divider-background-color);
+  content: "";
+  position: absolute;
+  z-index: 5;
+}
+/* Standout divider - horizontal */
+.nonogram-grid.grid-5x10:after {
+  top: calc(50% - (var(--divider-size) / 2));
+  left: 1px;
+  right: 1px;
+  height: var(--divider-size);
 }
 
 .nonogram-grid.grid-10x5 {
   grid-template-columns: repeat(10, 1fr);
+  position: relative;
+}
+.nonogram-grid.grid-10x5:before {
+  background-color: var(--divider-background-color);
+  content: "";
+  position: absolute;
+  z-index: 5;
+}
+/* Standout divider - vertical */
+.nonogram-grid.grid-10x5:before {
+  left: calc(50% - (var(--divider-size) / 2));
+  top: 1px;
+  bottom: 1px;
+  width: var(--divider-size);
 }
 
 .nonogram-grid.grid-10x10 {
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
+  position: relative;
+}
+.nonogram-grid.grid-10x10:before,
+.nonogram-grid.grid-10x10:after {
+  background-color: var(--divider-background-color);
+  content: "";
+  position: absolute;
+  z-index: var(--divider-z-index);
+}
+/* Standout divider - vertical */
+.nonogram-grid.grid-10x10:before {
+  left: calc(50% - (var(--divider-size) / 2));
+  top: 1px;
+  bottom: 1px;
+  width: var(--divider-size);
+}
+/* Standout divider - horizontal */
+.nonogram-grid.grid-10x10:after {
+  top: calc(50% - (var(--divider-size) / 2));
+  left: 1px;
+  right: 1px;
+  height: var(--divider-size);
 }
 
 .nonogram-grid:active,
