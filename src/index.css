@@ -236,6 +236,7 @@ body {
   transition: all .4s ease;
   transition-duration: .2s;
 }
+
 /* .nonogram-cell:hover {
   border-color: #1A59FF;
 } */
@@ -244,34 +245,19 @@ body {
   background-color: var(--filled-background-color);
   background-image: var(--filled-background-image);
 }
+
 /* .nonogram-cell.filled:hover {
   border-color: #ccc;
 } */
 
 .nonogram-cell.crossed {
+  align-items: center;
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  /* align-items: center; */
-  position: relative;
 }
-.nonogram-cell.crossed:before,
-.nonogram-cell.crossed:after {
-  background-color: var(--crossed-background-color);
-  border-radius: 2px;
-  content: "";
-  position: absolute;
-  margin: auto;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  height: 4px;
-  width: 70%;
-}
-.nonogram-cell.crossed:before {
-  transform: rotate(-45deg);
-}
-.nonogram-cell.crossed:after {
-  transform: rotate(45deg);
+
+.nonogram-cell.crossed svg {
+  color: var(--crossed-background-color);
+  height: auto;
+  width: 80%;
 }
