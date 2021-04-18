@@ -102,9 +102,16 @@ body {
 }
 
 .hint-num {
-  font-weight: bold;
+  letter-spacing: -0.0625rem;
   line-height: 1;
   transition: color .3s ease;
+}
+
+@media (min-width: 600px) and (min-height: 600px) {
+  .hint-num {
+    font-weight: bold;
+    letter-spacing: 0;
+  }
 }
 
 .column-hints {
