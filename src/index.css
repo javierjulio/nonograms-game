@@ -233,8 +233,6 @@ body {
   border-radius: 4px;
   height: var(--grid-cell-height);
   width: var(--grid-cell-width);
-  transition: all .4s ease;
-  transition-duration: .2s;
 }
 
 /* .nonogram-cell:hover {
