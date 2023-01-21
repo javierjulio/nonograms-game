@@ -78,6 +78,10 @@ class Puzzle extends Component {
       return;
 
     const cellValue = this.props.answer[cell.dataset.row][cell.dataset.column]
+
+    // Test this logic in Svelte rewrite/React update
+    // if ((this.cellState === CellState.UNKNOWN) || (this.cellState !== CellState.UNKNOWN && cellValue === CellState.UNKNOWN)) {
+
     // if update action is to clear/empty and current cell is NOT empty, update it
     // or if update action is to fill/cross (NOT empty) and current cell is empty, update it
     if ((this.cellState === CellState.UNKNOWN && cellValue !== CellState.UNKNOWN) || (this.cellState !== CellState.UNKNOWN && cellValue === CellState.UNKNOWN)) {
