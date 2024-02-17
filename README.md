@@ -4,11 +4,11 @@ This is a game of endless, randomly generated but solvable, Nonogram puzzles.
 
 ## Development
 
-1. Install [Node.js v20+](https://nodejs.org/) and Yarn
-2. `yarn install`
-3. `npx playwright install`
-4. `npm test`
-5. `npm run start`
+- Install [Node.js v20+](https://nodejs.org/) and Yarn
+- `yarn install`
+- `npx playwright install`
+- `npm test`
+- `npm run start`
 
 ## Deployment
 
