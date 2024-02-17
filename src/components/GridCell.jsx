@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { ReactComponent as XIcon } from "../svgs/x.svg";
+import XIcon from "./XIcon";
 
 const GridCell = memo(({value, row, column}) => {
   const classStates = [ "crossed", "filled" ]

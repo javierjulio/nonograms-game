@@ -1,5 +1,4 @@
-# https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-name: CI
+name: Tests
 
 on:
   push:
@@ -15,6 +14,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x, 20.x]
+    name: Node ${{ matrix.node-version }}
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
