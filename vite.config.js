@@ -8,6 +8,7 @@ export default defineConfig({
     // host: true, // Enable to expose host for running app on phone
     open: true
   },
+  base: '/nonograms-game/', // use repo name https://vitejs.dev/guide/static-deploy.html#github-pages
   test: {
     globals: true,
     environment: 'jsdom',
