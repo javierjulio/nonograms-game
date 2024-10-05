@@ -6,7 +6,6 @@ This is a game of endless, randomly generated but solvable, Nonogram puzzles.
 
 - Install [Node.js v20+](https://nodejs.org/) and Yarn
 - `yarn install`
-- `npx playwright install`
 - `npm test`
 - `npm run start`
 
