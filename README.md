@@ -1,10 +1,10 @@
 # Nonograms
 
-This is a game of endless, randomly generated but solvable, Nonogram puzzles.
+This is a game of endless, randomly generated but uniquely solvable, Nonogram puzzles.
 
 ## Development
 
-- Install [Node.js v20+](https://nodejs.org/) and Yarn
+- Install [Node.js v24+](https://nodejs.org/) and Yarn
 - `yarn install`
 - `npm test`
 - `npm run start`
