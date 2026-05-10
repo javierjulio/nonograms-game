@@ -4,8 +4,8 @@ This is a game of endless, randomly generated but uniquely solvable, Nonogram pu
 
 ## Development
 
-- Install [Node.js v24+](https://nodejs.org/) and Yarn
-- `yarn install`
+- Install [Node.js v24+](https://nodejs.org/)
+- `npm install`
 - `npm test`
 - `npm run start`
 
